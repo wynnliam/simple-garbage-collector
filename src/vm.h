@@ -12,7 +12,7 @@
 
 #include "./obj_type.h"
 
-#define MAX_STACK_SIZE	2
+#define MAX_STACK_SIZE	256
 
 typedef struct {
 	object* stack[MAX_STACK_SIZE];
@@ -20,5 +20,10 @@ typedef struct {
 } VM;
 
 VM* new_vm();
+
 void push(VM* vm, object* val);
 object* pop(VM* vm);
+
+object* new_object(VM* vm, object_type type);
+void push_int(VM* vm, int val);
+object* push_pair(VM* vm);

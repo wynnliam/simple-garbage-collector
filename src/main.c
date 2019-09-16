@@ -5,15 +5,12 @@
 int main() {
 	printf("Hello!\n");
 
-	object a, b, c;
 	VM* vm = new_vm();
 
-	push(vm, &a);
-	push(vm, &b);
-	push(vm, &c);
-	pop(vm);
-	pop(vm);
-	pop(vm);
+	push_int(vm, 3);
+	push_int(vm, 4);
+
+	object* obj = push_pair(vm);
 
 	return 0;
 }

@@ -34,3 +34,28 @@ object* pop(VM* vm) {
 
 	return vm->stack[--vm->stack_size];
 }
+
+object* new_object(VM* vm, object_type type) {
+	object* result = (object*)malloc(sizeof(object));
+
+	result->type = type;
+
+	return result;
+}
+
+void push_int(VM* vm, int val) {
+	object* object = new_object(vm, OBJ_INT);
+	object->value = val;
+
+	push(vm, object);
+}
+
+object* push_pair(VM* vm) {
+	object* object = new_object(vm, OBJ_PAIR);
+	object->tail = pop(vm);
+	object->head = pop(vm);
+
+	push(vm, object);
+
+	return object;
+}
