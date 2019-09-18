@@ -39,6 +39,7 @@ object* new_object(VM* vm, object_type type) {
 	object* result = (object*)malloc(sizeof(object));
 
 	result->type = type;
+	result->marked = 0;
 
 	return result;
 }

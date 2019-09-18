@@ -11,6 +11,8 @@ typedef enum {
 } object_type;
 
 typedef struct s_object {
+	unsigned char marked;
+
 	object_type type;
 
 	union {
