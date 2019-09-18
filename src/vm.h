@@ -15,6 +15,10 @@
 #define MAX_STACK_SIZE	256
 
 typedef struct {
+	// A list of ALL objects allocated (used or unused).
+	// We use this to find unused variables so that we can free them.
+	object* first_object;
+
 	object* stack[MAX_STACK_SIZE];
 	int stack_size;
 } VM;

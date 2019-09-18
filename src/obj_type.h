@@ -11,6 +11,12 @@ typedef enum {
 } object_type;
 
 typedef struct s_object {
+	// Problem: unmarked objects, by definition, are unreachable. Our VM implements
+	// the language semantics for object references. That is, we store only the pairs
+	// and ints that variables use. If a variable is not in scope, the objects are unreachable.
+	// To rectify this, we keep a list of ALL variables that are allocated.
+	struct s_object* next;
+
 	// If 0, it means the object is not referenced so we want to clean it.
 	// Otherwise, it is referenced directly or indirectly. We say it is directly
 	// referenced if it is used by a variable in scope. If it is indirectly, then
