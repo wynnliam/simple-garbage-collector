@@ -6,7 +6,9 @@
 
 VM* new_vm() {
 	VM* result = (VM*)malloc(sizeof(VM));
+
 	result->stack_size = 0;
+	result->first_object = NULL;
 
 	return result;
 }
@@ -40,6 +42,10 @@ object* new_object(VM* vm, object_type type) {
 
 	result->type = type;
 	result->marked = 0;
+
+	// Push this object on the stack of all allocated variables
+	result->next = vm->first_object;
+	vm->first_object = result;
 
 	return result;
 }
