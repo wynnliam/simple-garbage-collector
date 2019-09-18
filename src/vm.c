@@ -60,3 +60,13 @@ object* push_pair(VM* vm) {
 
 	return object;
 }
+
+void mark_all(VM* vm) {
+	int i;
+	for(i = 0; i < vm->stack_size; i++)
+		mark(vm->stack[i]);
+}
+
+void mark(object* obj) {
+	obj->marked = 1;
+}
