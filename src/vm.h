@@ -32,7 +32,10 @@ object* new_object(VM* vm, object_type type);
 void push_int(VM* vm, int val);
 object* push_pair(VM* vm);
 
+void do_garbage_collection(VM* vm);
+
 void mark_all(VM* vm);
 void mark(object* obj);
 
 void sweep(VM* vm);
+

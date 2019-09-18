@@ -105,3 +105,8 @@ void sweep(VM* vm) {
 		}
 	}
 }
+
+void do_garbage_collection(VM* vm) {
+	mark_all(vm);
+	sweep(vm);
+}
