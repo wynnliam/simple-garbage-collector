@@ -13,8 +13,14 @@
 #include "./obj_type.h"
 
 #define MAX_STACK_SIZE	256
+#define INITIAL_GC_THRESHOLD 4
 
 typedef struct {
+	// Tells us how many objects are allocated.
+	int num_objects;
+	// The number of objects required to trigger a garbage collection step.
+	int max_objects;
+
 	// A list of ALL objects allocated (used or unused).
 	// We use this to find unused variables so that we can free them.
 	object* first_object;
@@ -39,3 +45,4 @@ void mark(object* obj);
 
 void sweep(VM* vm);
 
+void free_vm(VM* vm);

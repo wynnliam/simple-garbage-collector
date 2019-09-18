@@ -10,6 +10,9 @@ VM* new_vm() {
 	result->stack_size = 0;
 	result->first_object = NULL;
 
+	result->num_objects = 0;
+	result->max_objects = INITIAL_GC_THRESHOLD;
+
 	return result;
 }
 
@@ -38,6 +41,9 @@ object* pop(VM* vm) {
 }
 
 object* new_object(VM* vm, object_type type) {
+	if(vm->num_objects == vm->max_objects)
+		do_garbage_collection(vm);
+
 	object* result = (object*)malloc(sizeof(object));
 
 	result->type = type;
@@ -46,6 +52,8 @@ object* new_object(VM* vm, object_type type) {
 	// Push this object on the stack of all allocated variables
 	result->next = vm->first_object;
 	vm->first_object = result;
+
+	vm->num_objects++;
 
 	return result;
 }
@@ -96,6 +104,9 @@ void sweep(VM* vm) {
 			object* temp = *curr;
 			*curr = temp->next;
 			free(temp);
+
+			vm->num_objects--;
+
 		} else {
 			// This object was reached, so go to the next one.
 			// So unmark this one (for the next garbage collection call)
@@ -107,6 +118,20 @@ void sweep(VM* vm) {
 }
 
 void do_garbage_collection(VM* vm) {
+	int num_objects = vm->num_objects;
+
 	mark_all(vm);
 	sweep(vm);
+
+	vm->max_objects = vm->num_objects * 2;
+
+	printf("Objects removed: %d\n", num_objects - vm->num_objects);
+}
+
+void free_vm(VM* vm) {
+	// Pops all items off the stack
+	vm->stack_size = 0;
+
+	do_garbage_collection(vm);
+	free(vm);
 }
