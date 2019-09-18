@@ -34,3 +34,5 @@ object* push_pair(VM* vm);
 
 void mark_all(VM* vm);
 void mark(object* obj);
+
+void sweep(VM* vm);

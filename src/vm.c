@@ -86,3 +86,22 @@ void mark(object* obj) {
 		mark(obj->tail);
 	}
 }
+
+void sweep(VM* vm) {
+	object** curr = &vm->first_object;
+
+	while(*curr) {
+		if(!(*curr)->marked) {
+			// This object wasn't reached, so remove it
+			object* temp = *curr;
+			*curr = temp->next;
+			free(temp);
+		} else {
+			// This object was reached, so go to the next one.
+			// So unmark this one (for the next garbage collection call)
+			// and move to the next one.
+			(*curr)->marked = 0;
+			curr = &(*curr)->next;
+		}
+	}
+}
