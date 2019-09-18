@@ -68,5 +68,15 @@ void mark_all(VM* vm) {
 }
 
 void mark(object* obj) {
+	// This is important so that we don't get caught in a cycle where pair a points to pair b
+	// which points back to pair a.
+	if(obj->marked)
+		return;
+
 	obj->marked = 1;
+
+	if(obj->type == OBJ_PAIR) {
+		mark(obj->head);
+		mark(obj->tail);
+	}
 }
